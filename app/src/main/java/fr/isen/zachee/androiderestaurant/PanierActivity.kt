@@ -1,7 +1,9 @@
-package fr.isen.zachee.androiderestaurant.ui.theme
+package fr.isen.zachee.androiderestaurant
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
@@ -14,12 +16,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,9 +38,8 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fr.isen.zachee.androiderestaurant.Panier.Panier
 import fr.isen.zachee.androiderestaurant.Panier.PanierElem
-import fr.isen.zachee.androiderestaurant.R
 
-class PanierActivity : AppCompatActivity() {
+class PanierActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -49,13 +54,37 @@ fun PanierView() {
     val basketItems = remember {
         mutableStateListOf<PanierElem>()
     }
+    var showDialog by remember { mutableStateOf(false) }
+
+    basketItems.addAll(Panier.current(context).items)
+    if (basketItems.isEmpty()) {
+        showDialog = true
+    }
     LazyColumn {
         items(basketItems) {
-            BasketItemView(it,basketItems)
+            BasketItemView(it, basketItems)
         }
     }
-    basketItems.addAll(Panier.current(context).items)
+
+    // Afficher la boîte de dialogue si le panier est vide
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text("Panier vide") },
+            text = { Text("Votre panier est vide. Veuillez ajouter des articles.") },
+            confirmButton = {
+                Button(onClick = {
+                    showDialog = false
+                    val intent = Intent(context, HomeActivity::class.java)
+                    context.startActivity(intent)
+                }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
 }
+
 @Composable
 fun BasketItemView(item: PanierElem, basketItems: MutableList<PanierElem>) {
     Card {

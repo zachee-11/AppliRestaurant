@@ -16,11 +16,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ui.theme.PanierActivity"
-            android:exported="false" />
+            android:name=".PanierActivity"
+            android:exported="false"
+            android:parentActivityName=".MenuActivity"
+            />
         <activity
             android:name=".DetailActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MenuActivity"
+            />
         <activity
             android:name=".MenuActivity"
             android:exported="false"
