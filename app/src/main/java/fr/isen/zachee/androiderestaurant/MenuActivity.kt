@@ -93,6 +93,14 @@ class MenuActivity : ComponentActivity() {
          PostData(type ,category)
      }
 @Composable
+fun AllMenusView() {
+  Column {
+        for (type in MenuType.entries) {
+            MenuView(type)
+        }
+    }
+}
+@Composable
      fun dishRow(dish: Dish){
                 val context = LocalContext.current
          Card (border = BorderStroke(1.dp, color = Color.Black),
@@ -100,8 +108,8 @@ class MenuActivity : ComponentActivity() {
                  .padding(10.dp)
                  .fillMaxWidth()
                  .clickable {
-                    val IntentOfDetail = Intent(context, DetailActivity::class.java)
-                     IntentOfDetail.putExtra(DetailActivity.DISH_EXTRA_KEY,dish)
+                     val IntentOfDetail = Intent(context, DetailActivity::class.java)
+                     IntentOfDetail.putExtra(DetailActivity.DISH_EXTRA_KEY, dish)
                      context.startActivity(IntentOfDetail)
                  }
              ){
@@ -112,8 +120,8 @@ class MenuActivity : ComponentActivity() {
                      .data(dish.images.first())
                      .build(),
                      null,
-                     placeholder = painterResource(R.drawable.ic_launcher_foreground),
-                     error = painterResource(R.drawable.ic_launcher_foreground),
+                     placeholder = painterResource(R.drawable.image_error),
+                     error = painterResource(R.drawable.image_error),
                      contentScale = ContentScale.Fit,
                      modifier = Modifier
                          .width(80.dp)

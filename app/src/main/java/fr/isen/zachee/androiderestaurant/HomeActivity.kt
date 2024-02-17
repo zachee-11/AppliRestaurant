@@ -6,9 +6,24 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -19,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import fr.isen.zachee.androiderestaurant.ui.theme.AndroidERestaurantTheme
 
 enum class MenuType {
@@ -84,15 +100,45 @@ class HomeActivity : ComponentActivity(), MenuInterface {
 @Composable
 fun SetupView(menu: MenuInterface) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(stringResource(R.string.app_name))
-        Image(painterResource(R.drawable.ic_launcher_background), null)
-        CustomButton(type = MenuType.STARTER, menu)
-        Divider()
-        CustomButton(type = MenuType.MAIN, menu)
-        Divider()
-        CustomButton(type =MenuType.DESSERT, menu)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(R.drawable.logo_resto),
+                contentDescription = null,
+                modifier = Modifier.size(50.dp)
+            )
+            Text(stringResource(R.string.app_name))
+            Row {
+                Icon(Icons.Filled.AccountBox, contentDescription = "Compte utilisateur",
+                    modifier = Modifier
+                        .clickable { /* TODO*/ }
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                Icon(Icons.Filled.ShoppingCart, contentDescription = "panier",
+                    modifier = Modifier
+                        .clickable { /* TODO*/ })
+            }
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            TextButton(onClick = { /* TODO */ }) {
+                Text("Tous")
+            }
+            CustomButton(type = MenuType.STARTER, menu)
+            CustomButton(type = MenuType.MAIN, menu)
+            CustomButton(type =MenuType.DESSERT, menu)
+        }
+        AllMenusView()
     }
+
 }
+
 
 @Composable fun CustomButton(type: MenuType, menu: MenuInterface) {
     TextButton(onClick = { menu.displayMenu(type) }) {
@@ -107,3 +153,17 @@ fun GreetingPreview() {
         SetupView(HomeActivity())
     }
 }
+@Composable
+fun IconesPanierEtCompte() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.End
+    ) {
+        Icon(Icons.Filled.ShoppingCart, contentDescription = "Panier")
+        Spacer(modifier = Modifier.width(16.dp))
+        Icon(Icons.Filled.AccountCircle, contentDescription = "Compte utilisateur")
+    }
+}
+

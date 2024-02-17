@@ -6,9 +6,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,6 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -62,11 +66,10 @@ fun PanierView() {
     }
     LazyColumn {
         items(basketItems) {
-            BasketItemView(it, basketItems)
+           PanierElemView(it, basketItems)
         }
+        basketItems.addAll(Panier.current(context).items)
     }
-
-    // Afficher la boîte de dialogue si le panier est vide
     if (showDialog) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
@@ -83,10 +86,35 @@ fun PanierView() {
             }
         )
     }
+    var total = 0.0
+    PanierEtPayer(total = total)
+}
+@Composable
+fun PanierEtPayer(total: Double) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "Total : $total €",
+                style = MaterialTheme.typography.headlineLarge
+            )
+            Button(onClick = { /* TODO */ }) {
+                Text("Payer")
+            }
+        }
+    }
 }
 
+
 @Composable
-fun BasketItemView(item: PanierElem, basketItems: MutableList<PanierElem>) {
+fun PanierElemView(item: PanierElem, basketItems: MutableList<PanierElem>) {
     Card {
         val context = LocalContext.current
         Card(border =  BorderStroke(1.dp, Color.Black),
@@ -100,8 +128,8 @@ fun BasketItemView(item: PanierElem, basketItems: MutableList<PanierElem>) {
                         .data(item.dish.images.first())
                         .build(),
                     null,
-                    placeholder = painterResource(R.drawable.ic_launcher_foreground),
-                    error = painterResource(R.drawable.ic_launcher_foreground),
+                    placeholder = painterResource(R.drawable.image_error),
+                    error = painterResource(R.drawable.image_error),
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
                         .width(80.dp)

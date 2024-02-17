@@ -75,8 +75,8 @@ class DetailActivity : ComponentActivity() {
                             .data(dish?.images?.get(it))
                             .build(),
                         null,
-                        placeholder = painterResource(R.drawable.ic_launcher_foreground),
-                        error = painterResource(R.drawable.ic_launcher_foreground),
+                        placeholder = painterResource(R.drawable.image_error),
+                        error = painterResource(R.drawable.image_error),
                         contentScale = ContentScale.FillBounds,
                         modifier = Modifier
                             .height(270.dp)
