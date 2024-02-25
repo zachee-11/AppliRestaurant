@@ -132,9 +132,10 @@ fun SetupView(menu: MenuInterface) {
                 )
             }
         }
-        Row(
+        Column(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             TextButton(onClick = { /* TODO */ }) {
                 Text("Tous")
