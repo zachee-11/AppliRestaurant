@@ -162,17 +162,5 @@ fun GreetingPreview() {
         SetupView(HomeActivity())
     }
 }
-@Composable
-fun IconesPanierEtCompte() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.End
-    ) {
-        Icon(Icons.Filled.ShoppingCart, contentDescription = "Panier")
-        Spacer(modifier = Modifier.width(16.dp))
-        Icon(Icons.Filled.AccountCircle, contentDescription = "Compte utilisateur")
-    }
-}
+
 

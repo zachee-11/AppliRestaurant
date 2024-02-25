@@ -78,7 +78,7 @@ fun PanierView() {
         AlertDialog(
             onDismissRequest = { showDialog = false },
             title = { Text("Panier vide") },
-            text = { Text("Votre panier est vide. Veuillez ajouter des articles.") },
+            text = { Text("Votre panier est vide. Veuillez ajouter des menus.") },
             confirmButton = {
                 Button(onClick = {
                     showDialog = false
