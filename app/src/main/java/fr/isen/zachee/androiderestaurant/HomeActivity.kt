@@ -31,6 +31,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -99,6 +100,7 @@ class HomeActivity : ComponentActivity(), MenuInterface {
 
 @Composable
 fun SetupView(menu: MenuInterface) {
+    val context = LocalContext.current
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Row(
             modifier = Modifier
@@ -109,18 +111,25 @@ fun SetupView(menu: MenuInterface) {
             Image(
                 painter = painterResource(R.drawable.logo_resto),
                 contentDescription = null,
-                modifier = Modifier.size(50.dp)
+                modifier = Modifier.size(80.dp)
             )
+            Spacer(modifier = Modifier.width(25.dp))
             Text(stringResource(R.string.app_name))
+            Spacer(modifier = Modifier.width(70.dp))
             Row {
                 Icon(Icons.Filled.AccountBox, contentDescription = "Compte utilisateur",
                     modifier = Modifier
                         .clickable { /* TODO*/ }
                 )
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(5.dp))
                 Icon(Icons.Filled.ShoppingCart, contentDescription = "panier",
                     modifier = Modifier
-                        .clickable { /* TODO*/ })
+                        .clickable {
+                            val intent = Intent(context, PanierActivity::class.java)
+                            context.startActivity(intent)
+                        }
+                        .weight(1f)
+                )
             }
         }
         Row(
@@ -134,7 +143,7 @@ fun SetupView(menu: MenuInterface) {
             CustomButton(type = MenuType.MAIN, menu)
             CustomButton(type =MenuType.DESSERT, menu)
         }
-        AllMenusView()
+
     }
 
 }

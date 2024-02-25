@@ -55,21 +55,25 @@ class PanierActivity : ComponentActivity() {
 @Composable
 fun PanierView() {
     val context = LocalContext.current
-    val basketItems = remember {
+    val panierItems = remember {
         mutableStateListOf<PanierElem>()
     }
     var showDialog by remember { mutableStateOf(false) }
 
-    basketItems.addAll(Panier.current(context).items)
-    if (basketItems.isEmpty()) {
+    // Mettre à jour panierItems une seule fois
+    panierItems.clear()
+    panierItems.addAll(Panier.current(context).items)
+
+    if (panierItems.isEmpty()) {
         showDialog = true
     }
+
     LazyColumn {
-        items(basketItems) {
-           PanierElemView(it, basketItems)
+        items(panierItems) {
+            PanierElemView(it, panierItems)
         }
-        basketItems.addAll(Panier.current(context).items)
     }
+
     if (showDialog) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
@@ -86,11 +90,17 @@ fun PanierView() {
             }
         )
     }
-    var total = 0.0
-    PanierEtPayer(total = total)
+    PanierEtPayer(panierItems)
 }
+
 @Composable
-fun PanierEtPayer(total: Double) {
+fun PanierEtPayer(panierItems: MutableList<PanierElem>) {
+    val context = LocalContext.current
+    var showDialog by remember { mutableStateOf(false) }
+
+    // Calculer le total
+    val total = panierItems.sumByDouble { it.dish.prices.first().price.toDouble() * it.count.toDouble() }
+
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomCenter
@@ -105,12 +115,31 @@ fun PanierEtPayer(total: Double) {
                 text = "Total : $total €",
                 style = MaterialTheme.typography.headlineLarge
             )
-            Button(onClick = { /* TODO */ }) {
+            Button(onClick = { showDialog = true }) {
                 Text("Payer")
             }
         }
+
+        if (showDialog) {
+            AlertDialog(
+                onDismissRequest = { showDialog = false },
+                title = { Text("Paiement non disponible") },
+                text = { Text("Le paiement n'est pas disponible pour le moment.") },
+                confirmButton = {
+                    Button(onClick = {
+                        showDialog = false
+                        val intent = Intent(context, PanierActivity::class.java)
+                        context.startActivity(intent)
+                    }) {
+                        Text("OK")
+                    }
+                }
+            )
+        }
     }
 }
+
+
 
 
 @Composable
