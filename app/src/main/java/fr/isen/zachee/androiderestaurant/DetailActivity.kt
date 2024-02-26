@@ -64,11 +64,7 @@ class DetailActivity : ComponentActivity() {
                     Modifier
                         .padding(10.dp)
                         .height(15.dp)
-                        .align(Alignment.CenterHorizontally),
-
-
-                )
-
+                        .align(Alignment.CenterHorizontally))
                 HorizontalPager(state = pagerState) {
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
@@ -106,21 +102,12 @@ class DetailActivity : ComponentActivity() {
                        val intent = intent
                     PanierCommadeButton(intent)
                 DishPriceBox(dish = dish, quantity = quantity)
-
-
-
             }
         }
-
                   }
-
-
-
-
     companion object{
         val  DISH_EXTRA_KEY = " DISH_EXTRA_KEY"
     }
-
 }
 
 @Composable
@@ -128,8 +115,6 @@ fun NumberIncrementerBox(onQuantityChanged: (Int) -> Unit) {
     val context = LocalContext.current
     var count by remember { mutableStateOf(1) }
     var showAlert by remember { mutableStateOf(false) }
-
-
     Row(
         modifier = Modifier
             .fillMaxWidth()

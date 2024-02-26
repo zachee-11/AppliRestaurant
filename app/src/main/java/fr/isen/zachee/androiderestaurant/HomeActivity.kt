@@ -95,9 +95,6 @@ class HomeActivity : ComponentActivity(), MenuInterface {
         super.onDestroy()
     }
 }
-
-
-
 @Composable
 fun SetupView(menu: MenuInterface) {
     val context = LocalContext.current
